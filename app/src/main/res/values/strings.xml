@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PDFUploadActivity</string>
+    <string-array name="pizza_menu">
+        <item>Select</item>
+        <item>cheese</item>
+        <item>pannir</item>
+        <item>pakoda</item>
+    </string-array>
+</resources>
