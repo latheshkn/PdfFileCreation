@@ -60,14 +60,20 @@ private File pdffile;
 
         String pdfname="Invoice.pdf";
         pdffile=new File(docsFolder.getAbsolutePath(),pdfname);
+
        try {
            outputStream=new FileOutputStream(pdffile);
        } catch (FileNotFoundException e) {
            e.printStackTrace();
        }
        Document document=new Document(PageSize.A4);
+
        PdfPTable table =new PdfPTable(new float[] {3,3,3,3,3});
        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+       table.getDefaultCell().setFixedHeight(50);
+       table.setTotalWidth(PageSize.A4.getWidth());
+       table.setWidthPercentage(100);
+       table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
        table.getDefaultCell().setFixedHeight(50);
        table.setTotalWidth(PageSize.A4.getWidth());
        table.setWidthPercentage(100);
@@ -83,11 +89,33 @@ private File pdffile;
            cell[j].setBackgroundColor(BaseColor.GRAY);
        }
 
+
        table.addCell("lathesh");
        table.addCell("price");
        table.addCell("type");
        table.addCell("url");
        table.addCell("date");
+
+       PdfPTable table2 =new PdfPTable(new float[] {3,3,3,3,3});
+       table2.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+       table2.getDefaultCell().setFixedHeight(0);
+       table2.setTotalWidth(PageSize.A4.getWidth());
+       table2.setWidthPercentage(100);
+
+       table2.getDefaultCell().setVerticalAlignment(Element.ALIGN_BOTTOM);
+       table2.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+       table2.getDefaultCell().setFixedHeight(50);
+       table2.setTotalWidth(PageSize.A4.getWidth());
+       table2.setWidthPercentage(100);
+       table2.setSpacingAfter(50);
+       table2.setSpacingBefore(200);
+       table2.setSplitRows(true);
+       table2.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+       table2.addCell("fas");
+       table2.addCell("122");
+       table2.addCell("gr");
+       table2.addCell("ad.co,");
+       table2.addCell("124");
 
        try {
            if (outputStream!=null){
@@ -106,6 +134,7 @@ private File pdffile;
            document.add(new Paragraph("pdf Data\n\n",f));
            document.add(new Paragraph("pdf File Through itext\n\n",g));
            document.add(table);
+           document.add(table2);
        } catch (DocumentException e) {
            e.printStackTrace();
        }
@@ -122,11 +151,11 @@ private File pdffile;
 
        List list= packageManager.queryIntentActivities(intent,PackageManager.MATCH_DEFAULT_ONLY);
        if (list.size()>0){
-           Intent intent1=new Intent();
-           intent1.setAction(Intent.ACTION_VIEW);
-           Uri uri= Uri.fromFile(pdffile);
-           intent1.setDataAndType(uri,"application/pdf");
-           startActivity(intent1);
+//           Intent intent1=new Intent();
+//           intent1.setAction(Intent.ACTION_VIEW);
+//           Uri uri= Uri.fromFile(pdffile);
+//           intent1.setDataAndType(uri,"application/pdf");
+//           startActivity(intent1);
        }else{
            Toast.makeText(context, "Donload a pdf viewer", Toast.LENGTH_SHORT).show();
        }

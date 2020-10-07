@@ -55,56 +55,56 @@ public class MainActivity extends AppCompatActivity {
         btn_generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edt_name.getText().toString().length()==0 ||
-                        edt_cmp.getText().toString().length()==0 ||
-                        edt_item1.getText().toString().length()==0 ||
-                        edt_item2.getText().toString().length()==0
-                        ){
-                    Toast.makeText(MainActivity.this, "some fields are empty", Toast.LENGTH_SHORT).show();
-                }else{
-                    PdfDocument pdfDocument=new PdfDocument();
-                    Paint paint=new Paint();
-//                    to add the titile
-                    Paint Titlepaint=new Paint();
-
-                    PdfDocument.PageInfo pageInfo=new PdfDocument.PageInfo.Builder(1200,2010,1).create();
-                    PdfDocument.Page mypage=pdfDocument.startPage(pageInfo);
-                    Canvas canvas=mypage.getCanvas();
-                     canvas.drawBitmap(scaledbtmp,0,0,paint);
-
-                     Titlepaint.setTextAlign(Paint.Align.CENTER);
-                     Titlepaint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-                     Titlepaint.setTextSize(70);
-                     canvas.drawText("Diamond Pizza",pageWidth/2,270,Titlepaint);
-
-                     paint.setColor(Color.rgb(0,113,188));
-                     paint.setTextSize(30f);
-                     paint.setTextAlign(Paint.Align.RIGHT);
-                     canvas.drawText("call-8792130224",1160,40,paint);
-
-                     canvas.drawText("8792130224",1160,40,paint);
-                     Titlepaint.setTextAlign(Paint.Align.CENTER);
-                     Titlepaint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.ITALIC));
-                     Titlepaint.setTextSize(70);
-                     canvas.drawText("Invoice",pageWidth/2,500,Titlepaint);
-
-                     paint.setTextAlign(Paint.Align.LEFT);
-                     paint.setTextSize(35f);
-                     paint.setColor(Color.BLACK);
-                     canvas.drawText("Customer Name"+edt_name.getText(),20,590,paint);
-                     canvas.drawText("Contact number"+edt_cmp.getText(),20,640,paint);
-
-                    pdfDocument.finishPage(mypage);
-
-                    File file=new File(Environment.getExternalStorageDirectory(),"/hello.pdf");
-
-                    try {
-                        pdfDocument.writeTo(new FileOutputStream(file));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    pdfDocument.close();
-                }
+//                if (edt_name.getText().toString().length()==0 ||
+//                        edt_cmp.getText().toString().length()==0 ||
+//                        edt_item1.getText().toString().length()==0 ||
+//                        edt_item2.getText().toString().length()==0
+//                        ){
+//                    Toast.makeText(MainActivity.this, "some fields are empty", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    PdfDocument pdfDocument=new PdfDocument();
+//                    Paint paint=new Paint();
+////                    to add the titile
+//                    Paint Titlepaint=new Paint();
+//
+//                    PdfDocument.PageInfo pageInfo=new PdfDocument.PageInfo.Builder(1200,2010,1).create();
+//                    PdfDocument.Page mypage=pdfDocument.startPage(pageInfo);
+//                    Canvas canvas=mypage.getCanvas();
+//                     canvas.drawBitmap(scaledbtmp,0,0,paint);
+//
+//                     Titlepaint.setTextAlign(Paint.Align.CENTER);
+//                     Titlepaint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+//                     Titlepaint.setTextSize(70);
+//                     canvas.drawText("Diamond Pizza",pageWidth/2,270,Titlepaint);
+//
+//                     paint.setColor(Color.rgb(0,113,188));
+//                     paint.setTextSize(30f);
+//                     paint.setTextAlign(Paint.Align.RIGHT);
+//                     canvas.drawText("call-8792130224",1160,40,paint);
+//
+//                     canvas.drawText("8792130224",1160,40,paint);
+//                     Titlepaint.setTextAlign(Paint.Align.CENTER);
+//                     Titlepaint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.ITALIC));
+//                     Titlepaint.setTextSize(70);
+//                     canvas.drawText("Invoice",pageWidth/2,500,Titlepaint);
+//
+//                     paint.setTextAlign(Paint.Align.LEFT);
+//                     paint.setTextSize(35f);
+//                     paint.setColor(Color.BLACK);
+//                     canvas.drawText("Customer Name"+edt_name.getText(),20,590,paint);
+//                     canvas.drawText("Contact number"+edt_cmp.getText(),20,640,paint);
+//
+//                    pdfDocument.finishPage(mypage);
+//
+//                    File file=new File(Environment.getExternalStorageDirectory(),"/hello.pdf");
+//
+//                    try {
+//                        pdfDocument.writeTo(new FileOutputStream(file));
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    pdfDocument.close();
+//                }
 
 
             }
