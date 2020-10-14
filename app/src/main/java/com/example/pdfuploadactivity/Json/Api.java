@@ -7,9 +7,9 @@ import retrofit2.http.Query;
 public interface Api {
 
     //Get Job
-    @GET("search_job.php")
-    Call<JobResponse> searchJob(
-            @Query("skill") String skills,
-            @Query("location") String location
+    @GET("getpdf.php")
+    Call<GetPdfResponse> searchJob(
+            @Query("invoice_id") String invoice_id
+
     );
 }

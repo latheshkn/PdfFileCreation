@@ -19,6 +19,9 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.pdfuploadactivity.Json.Api;
 import com.example.pdfuploadactivity.Json.BaseClient;
+import com.example.pdfuploadactivity.Json.GetPdf;
+import com.example.pdfuploadactivity.Json.GetPdfData;
+import com.example.pdfuploadactivity.Json.GetPdfResponse;
 import com.example.pdfuploadactivity.Json.JobData;
 import com.example.pdfuploadactivity.Json.JobResponse;
 import com.itextpdf.text.BaseColor;
@@ -82,11 +85,12 @@ public class PDFactivity extends AppCompatActivity {
     public void creaatePdf() {
 
         Api api = BaseClient.getBaseClient().create(Api.class);
-        Call<JobResponse> call = api.searchJob("p","");
-        call.enqueue(new Callback<JobResponse>() {
+        Call<GetPdfResponse> call = api.searchJob("mgt2021");
+        call.enqueue(new Callback<GetPdfResponse>() {
             @Override
-            public void onResponse(Call<JobResponse> call, Response<JobResponse> response) {
-                JobResponse jobResponse = response.body();
+            public void onResponse(Call<GetPdfResponse> call, Response<GetPdfResponse> response) {
+                GetPdfResponse jobResponse = response.body();
+                GetPdfData getPdfData=jobResponse.getItem();
 
                 if (response.isSuccessful() && jobResponse.getStatus().equals("1")){
 
@@ -122,9 +126,9 @@ public class PDFactivity extends AppCompatActivity {
                     table.setTotalWidth(PageSize.A4.getWidth());
                     table.setWidthPercentage(100);
                     table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-                    table.addCell("JobId");
-                    table.addCell("Company");
-                    table.addCell("Location");
+                    table.addCell("invoice_id");
+                    table.addCell("item_name");
+                    table.addCell("quantity");
 
                     table.setHeaderRows(1);
 
@@ -132,18 +136,17 @@ public class PDFactivity extends AppCompatActivity {
                     for (int j = 0; j < cell.length; j++) {
                         cell[j].setBackgroundColor(BaseColor.GRAY);
                     }
-                    Toast.makeText(PDFactivity.this, jobId + " "+ jobTitle, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(PDFactivity.this, jobId + " "+ jobTitle, Toast.LENGTH_SHORT).show();
 
 
-                    List<JobData> jobData = jobResponse.getData();
+                  List<GetPdf>   getPdfs=getPdfData.getData();
 
-                    for(int i = 0; i<jobData.size(); i++) {
-                        jobId = jobData.get(i).getJob_id();
-                        jobTitle = jobData.get(i).getJob_title();
-                        location = jobData.get(i).getLocation();
-                        experience = jobData.get(i).getExperience();
-                        companyName = jobData.get(i).getCompany_name();
-                        role = jobData.get(i).getRole();
+                    for(int i = 0; i<getPdfs.size(); i++) {
+                        jobId = getPdfs.get(i).getItem_name();
+                        jobTitle = getPdfs.get(i).getInvoice_id();
+                        location = getPdfs.get(i).getQuantity();
+                        experience = getPdfs.get(i).getPrice();
+
 
                         table.addCell(jobId);
                         table.addCell(jobTitle);
@@ -168,30 +171,26 @@ public class PDFactivity extends AppCompatActivity {
 
                     try {
                         document.add(new Paragraph("From\n", f));
-                        document.add(new Paragraph("Email:prapulla.mn@gmail.com\n", f));
-                        document.add(new Paragraph("Phone:9632589632\n", f));
-                        document.add(new Paragraph("GSTIn :\n\n", f));
+                        document.add(new Paragraph(getPdfData.getBusiness_name()+"\n", f));
+                        document.add(new Paragraph(getPdfData.getBusiness_address()+"\n", f));
+                        document.add(new Paragraph(getPdfData.getUser_email()+"\n", f));
+                        document.add(new Paragraph(getPdfData.getUser_mobile()+"\n", f));
+                        document.add(new Paragraph(getPdfData.getUser_gst()+"\n\n", f));
                         document.add(new Paragraph("To\n", f));
-                        document.add(new Paragraph("prapulla\n", f));
-                        document.add(new Paragraph("mysore\n", f));
-                        document.add(new Paragraph("Email :prapu@gmail.com\n", f));
-                        document.add(new Paragraph("Phone :9632589631\n", f));
-                        document.add(new Paragraph("\t\tGSTIn :18AABCT3518Q1ZV\n\n", f));
+                        document.add(new Paragraph(getPdfData.getCustomer_name()+"\n", f));
+                        document.add(new Paragraph(getPdfData.getCustomer_address()+"\n", f));
+                        document.add(new Paragraph(getPdfData.getCutomer_email()+"\n", f));
+                        document.add(new Paragraph(getPdfData.getCutomer_mobile()+"\n", f));
+                        document.add(new Paragraph(getPdfData.getCustomer_gst()+"\n\n", f));
 
 
-                        Paragraph paragraph=new Paragraph("Invoice :pra/20-21/2\n",f);
+                        Paragraph paragraph=new Paragraph("Invoice Date :/20-21/2\n\n",f);
                         paragraph.setAlignment(Element.ALIGN_RIGHT);
                         document.add(paragraph);
 
-                        Paragraph paragraporder=new Paragraph("Order id: 3",f);
-                        paragraporder.setAlignment(Element.ALIGN_RIGHT);
-                        document.add(paragraporder);
 
 
-                        Paragraph pr= new Paragraph("Payment Type: Cash\n\n", f);
-                        pr.setAlignment(Element.ALIGN_RIGHT);
 
-                        document.add(pr);
                         InputStream ims = getAssets().open("music_bg.jpg");
                         Bitmap bmp = BitmapFactory.decodeStream(ims);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -221,7 +220,7 @@ public class PDFactivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<JobResponse> call, Throwable t) {
+            public void onFailure(Call<GetPdfResponse> call, Throwable t) {
                 Toast.makeText(PDFactivity.this, "On Failure", Toast.LENGTH_SHORT).show();
             }
         });
