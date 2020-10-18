@@ -1,15 +1,18 @@
 package com.example.pdfuploadactivity;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import com.example.pdfuploadactivity.Json.GetPdfData;
 import com.example.pdfuploadactivity.Json.GetPdfResponse;
 import com.example.pdfuploadactivity.Json.JobData;
 import com.example.pdfuploadactivity.Json.JobResponse;
+import com.github.barteksc.pdfviewer.PDFView;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -58,21 +62,45 @@ public class PDFactivity extends AppCompatActivity {
     OutputStream outputStream;
     Context context;
     TextView text_view;
+    PDFView pdf_viewer;
     String jobId,jobTitle,location,experience,companyName,role;
-
+Button btn_view,btn_create;
+    Uri path;
+    Document document;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_d_factivity);
-        text_view=findViewById(R.id.text_view_pdf);
+//        text_view=findViewById(R.id.text_view_pdf);
+        btn_view=findViewById(R.id.btn_view);
+        pdf_viewer=findViewById(R.id.pdf_viewer);
+        btn_create=findViewById(R.id.btn_create);
 
-        text_view.setOnClickListener( new View.OnClickListener() {
+
+        btn_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+//                pdf_viewer.fromUri(Uri).load();
+                pdf_viewer.fromFile(pdffile).load();
+//                pdf_viewer.fromBytes(byte[])
+//                pdf_viewer.fromStream(InputStream).load();
+//                pdf_viewer.fromSource(DocumentSource).load();
+            }
+        });
+
+        btn_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
                 creaatePdf();
             }
         });
+
+
 
         if (ActivityCompat.checkSelfPermission(PDFactivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
             Toast.makeText(PDFactivity.this, "permission granted", Toast.LENGTH_SHORT).show();
@@ -111,7 +139,7 @@ public class PDFactivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Document document = new Document(PageSize.A4);
+                     document = new Document(PageSize.A4);
 
                     //new float[]{2, 6, 4} is number or coloms if we need to increase then new float[]{2, 6, 4,3,5......}
                     PdfPTable table = new PdfPTable(new float[]{2, 6, 4});
